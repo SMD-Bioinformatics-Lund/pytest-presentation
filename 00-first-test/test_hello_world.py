@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
+# 1. Show simple test
+# 2. Show multiple tests per module and how to run specific tests within that module.
+
 
 def add(x, y):
     return x + y
 
 
-# Add test below:
+def subtract(x, y):
+    return x - y
 
 
-# Repeat for broken subtract function:
-def subtract():
-    ...
+# Add test for add below:
+
+# Add test for subtract below
