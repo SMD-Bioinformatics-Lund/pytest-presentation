@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 
-import pytest
+"""
+Show how to set up test conditions by chaining fixtures:
 
-# 1. Show how to chain fixtures
+Create empty DB instance in fixture.
+Populate with data from second fixture and pass to test.
+"""
+
+
+import pytest
 
 
 class SimpleDB:
@@ -22,18 +28,30 @@ class SimpleDB:
 
 @pytest.fixture()
 def empty_database():
+    """
+    SimpleDB instance w/o data
+    """
     ...
 
 
 @pytest.fixture()
 def test_data():
+    """
+    Data for testing
+    """
     ...
 
 
 @pytest.fixture()
 def initialized_db():
+    """
+    SimpleDB instance w/ test data
+    """
     ...
 
 
-def test_db_add():
+def test_initialized_db():
+    """
+    Write test that confirms db contains sample.
+    """
     ...
