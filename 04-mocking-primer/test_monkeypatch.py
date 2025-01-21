@@ -18,6 +18,10 @@ class ThingieThatDoesThing:
         Fetch and process a case.
         """
         result = self._fetch_scout_case()
+
+        if not result:
+            raise RuntimeError
+
         result["thing_done"] = True
         return result
 
@@ -55,5 +59,11 @@ def test_do_the_thing(patched_thingie):
     assert result["thing_done"]
 
 
-def test_raise_exception_if_thing_not_done():
+def test_fetch_scout_case_called_only_once():
     ...
+
+
+def test_raise_exception_if_unable_to_retrieve_data():
+    ...
+    with pytest.raises(RuntimeError, match="Simulated network error"):
+        thingie.do_thing_with_some_scout_case()
