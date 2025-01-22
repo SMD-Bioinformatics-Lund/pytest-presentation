@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
 
+"""
+Simple example using magickmock to bypass time-consuming function in tests
+
+Show how to bypass an expensive call by mocking
+
+Show how to simulate runtime errors using mocking.
+
+Example:   Avoiding ssh/scp-calls to hopper in bjorn
+Example 2: Mocking pymongo connections in flask apps (simplest example in bjornWeb)
+"""
+
 import pytest
 import logging
 import time
-
-"""
-Simple example using magickmock to bypass time-consuming function in tests
-"""
 
 
 class Thingie:
@@ -24,6 +31,7 @@ class Thingie:
         """
         result = self._fetch_scout_case()
 
+        # Raise error if case cannot be fetched:
         if not result:
             raise RuntimeError
 
@@ -63,7 +71,9 @@ def test_case():
 
 
 def test_do_the_thing(thingie):
-    """ """
+    """
+    Test that do_thing works, but bypass the expensive _fetch_scout_case function
+    """
     result = thingie.do_thing_with_some_scout_case()
     assert result["case_id"] == "foo"
 
