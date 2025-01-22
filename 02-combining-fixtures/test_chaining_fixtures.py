@@ -5,6 +5,9 @@ Show how to set up test conditions by chaining fixtures:
 
 1. Create empty DB instance in fixture.
 2. Populate with data from second fixture and pass to test.
+3. Show that fixtures can be requested more than once by test.
+
+4. Show simple initialized Flask app fixture in bjornWEB
 """
 
 
