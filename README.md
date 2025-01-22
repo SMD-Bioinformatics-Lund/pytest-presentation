@@ -9,10 +9,6 @@ Presentation given at @SMD-Bioinformatics-Lund on 2025-01-15
 pip install pytest
 ```
 
-## Yr first test file:
-
-By convention test files should be placed in a `tests/` dir in the project root directory.
-
 ### Running tests:
 
 All tests:
@@ -37,6 +33,8 @@ pytest tests/test_foo.py::test_some_thing
 
 ```
 pytest -v            # more verbose output.
-pytest -x:           # do not run more tests after first FAIL
+pytest -x            # do not run more tests after first FAIL
 pytest --maxfail=3   # stop running tets after three FAILs
+pytest --lf          # or --last-failed, only re-reun failed tests from previous run
+pytest --ff          # or --failed-first, run the failures first and then the rest of the tests.
 ```
