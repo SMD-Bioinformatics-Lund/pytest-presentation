@@ -3,8 +3,8 @@
 """
 Show how to set up test conditions by chaining fixtures:
 
-Create empty DB instance in fixture.
-Populate with data from second fixture and pass to test.
+1. Create empty DB instance in fixture.
+2. Populate with data from second fixture and pass to test.
 """
 
 
@@ -18,12 +18,24 @@ class SimpleDB:
     def add(self, entry: dict):
         self.db.append(entry)
 
-    def get_latest_entry(self) -> dict | None:
+    def get_sample_by_sample_id(self, sample_id) -> dict | None:
         if not self.db:
             return None
 
-        idx_most_recent = len(self.db) - 1
-        return self.db[idx_most_recent]
+        for sample in self.db:
+            if sample["sample_id"] == sample_id:
+                return sample
+
+    def get_sample_by_group_id(self, group_id) -> dict | None:
+        if not self.db:
+            return None
+
+        for sample in self.db:
+            if sample["group_id"] == group_id:
+                return sample
+
+    def is_empty(self) -> bool:
+        return len(self.db) == 0
 
 
 @pytest.fixture()
@@ -39,7 +51,7 @@ def test_data():
     """
     Data for testing
     """
-    ...
+    sample_data = {"sample_id": "foo", "assay": "wgs_hg38", "group_id": "bar"}
 
 
 @pytest.fixture()
@@ -50,8 +62,14 @@ def initialized_db():
     ...
 
 
-def test_initialized_db():
+def test_get_sample_by_sample_id():
     """
-    Write test that confirms db contains sample.
+    Write test that fetches sample by sample id from a SimpleDB instance
     """
     ...
+
+
+def test_get_sample_by_group_id():
+    """
+    Write test that fetches sample by group id from a SimpleDB instance
+    """
