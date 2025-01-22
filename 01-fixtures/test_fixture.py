@@ -2,7 +2,6 @@
  1. Show how to make a fixture:
  2. Show how to pass a fixture to a test
  3. Move test_data fixtures and move to conftest.py
- (4. Use requests fixture to fetch multiple test cases?)
 """
 
 
