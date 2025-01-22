@@ -9,7 +9,12 @@ Simple example using magickmock to bypass time-consuming function in tests
 """
 
 
-class ThingieThatDoesThing:
+class Thingie:
+
+    """
+    A thingie with a slow data-fetch and process operation
+    """
+
     def __init__(self) -> None:
         pass
 
@@ -36,34 +41,37 @@ class ThingieThatDoesThing:
 
         return case_obj
 
+    def _some_other_function(self, x, y):
+        ...
+
 
 @pytest.fixture()
 def thingie():
-    return ThingieThatDoesThing()
+    """
+    Initialized thingie
+    """
+    return Thingie()
 
 
 @pytest.fixture()
 def test_case():
+    """
+    Some test data
+    """
     case_obj = {"case_id": "bar", "status": "active", "thing_done": True}
     return case_obj
 
 
-@pytest.fixture()
-def patched_thingie():
-    ...
-
-
-def test_do_the_thing(patched_thingie):
-    result = patched_thingie.do_thing_with_some_scout_case()
+def test_do_the_thing(thingie):
+    """ """
+    result = thingie.do_thing_with_some_scout_case()
     assert result["case_id"] == "foo"
-    assert result["thing_done"]
-
-
-def test_fetch_scout_case_called_only_once():
-    ...
 
 
 def test_raise_exception_if_unable_to_retrieve_data():
+    """
+    Use monkeypatch on `_fetch_scout_case` to simulate a network error
+    """
     ...
     with pytest.raises(RuntimeError, match="Simulated network error"):
         thingie.do_thing_with_some_scout_case()
