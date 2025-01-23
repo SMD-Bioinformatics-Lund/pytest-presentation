@@ -4,6 +4,8 @@
  3. Move test_data fixtures and move to conftest.py
 """
 
+import pytest
+
 
 def check_coverage(test_data: dict, min_coverage: float):
     return test_data["coverage"] >= min_coverage
