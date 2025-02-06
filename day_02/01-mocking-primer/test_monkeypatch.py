@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 
 """
-Simple example using magickmock to bypass time-consuming function in tests
+Use built-in monkeypatch fixture to
 
-Show how to bypass an expensive call by mocking
+* Show how to bypass an expensive call by mocking
+* Show how to simulate runtime errors using mocking.
 
-Show how to simulate runtime errors using mocking.
-
-Example:   Avoiding ssh/scp-calls to hopper in bjorn
-Example 2: Mocking pymongo connections in flask apps (simplest example in bjornWeb)
+* Real example 1:
+    - Avoiding ssh/scp-calls to hopper in bjorn
+* Real example 2:
+    - Mocking pymongo connections in flask apps (simplest example in bjornWeb)
 """
 
 import pytest
@@ -23,13 +24,13 @@ class Thingie:
     """
 
     def __init__(self) -> None:
-        pass
+        ...
 
     def do_thing_with_some_scout_case(self):
         """
         Fetch and process a case.
         """
-        result = self._fetch_scout_case()
+        result = self._slow_api_call()
 
         # Raise error if case cannot be fetched:
         if not result:
@@ -38,7 +39,7 @@ class Thingie:
         result["thing_done"] = True
         return result
 
-    def _fetch_scout_case(self) -> dict:
+    def _slow_api_call(self) -> dict:
         """
         Slow network call. We don't want this to run in our tests.
         """
@@ -62,7 +63,7 @@ def thingie():
 
 
 @pytest.fixture()
-def test_case():
+def example_case():
     """
     Some test data
     """

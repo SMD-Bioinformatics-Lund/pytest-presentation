@@ -19,19 +19,16 @@ def check_insert_length(test_data: dict, min_insert_length: int):
     return test_data["insert_size"] >= min_insert_length
 
 
-# def test_check_coverage():
-#     test_data = {
-#         "sample_id": "test_sample",
-#         "sample_type": "tumor",
-#         "coverage": 45,
-#         "contamination": 0.02,
-#         "insert_size": 150,
-#     }
-#     ...
+def test_check_coverage(test_data):
+    assert check_coverage(test_data, 30) == True
 
 
-# def test_check_coverage(): ...
+def test_check_contamination(test_data):
+    assert check_contamination(test_data, 0.01) == False
 
-# def test_check_contamination(): ...
+
+def test_check_fixture(test_data):
+    assert type(test_data) == dict
+
 
 # def test_check_insert_length(): ...

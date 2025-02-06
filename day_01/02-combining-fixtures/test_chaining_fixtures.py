@@ -46,7 +46,7 @@ def empty_database():
     """
     SimpleDB instance w/o data
     """
-    ...
+    return SimpleDB()
 
 
 @pytest.fixture()
@@ -55,21 +55,24 @@ def test_data():
     Data for testing
     """
     sample_data = {"sample_id": "foo", "assay": "wgs_hg38", "group_id": "bar"}
+    return sample_data
 
 
 @pytest.fixture()
-def initialized_db():
+def initialized_db(empty_database, test_data):
     """
     SimpleDB instance w/ test data
     """
-    ...
+    empty_database.add(test_data)
+    assert not empty_database.is_empty()
+    return empty_database
 
 
-def test_get_sample_by_sample_id():
+def test_get_sample_by_sample_id(initialized_db, test_data):
     """
     Write test that fetches sample by sample id from a SimpleDB instance
     """
-    ...
+    assert initialized_db.get_sample_by_sample_id(test_data["sample_id"]) is not None
 
 
 def test_get_sample_by_group_id():

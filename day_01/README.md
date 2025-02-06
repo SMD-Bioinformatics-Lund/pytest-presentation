@@ -3,7 +3,6 @@
 1. Introduction to pytest:
 
     * Why use pytest?
-      * Where is it used in our codebase?
     * Installation
     * Running from CLI
     * Writing a simple test

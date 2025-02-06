@@ -14,5 +14,12 @@ def subtract(x, y):
 
 
 # Add test for add below:
+def test_add():
+    assert add(2, 2) == 4
+    assert add(2, 3) == 5
+    assert add(3, 3) == 6
+
 
 # Add test for subtract below
+def test_subtract():
+    assert subtract(1, 1) == 0
