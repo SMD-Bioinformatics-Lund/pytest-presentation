@@ -131,3 +131,40 @@ def test_check_if_correct_api_call_dispatched(
     user_handler, user_data, mocker, user_api_call
 ):
 
+    class FakeResponse:
+        ok = True
+
+        def json(self):
+            return [user_data]
+
+    # 1. user mocker to mock requests.get
+    patch_requests_get = mocker.patch("requests.get", return_value=FakeResponse())
+
+    result = user_handler.get_user_email(user_data["username"])
+    assert result == user_data["email"]
+    patch_requests_get.assert_called_once_with(user_api_call)
+
+
+def test_get_user_email_raises_error(user_handler, user_data, mocker, caplog):
+    """
+    Test that our function behaves as expected when api is unreachable
+    """
+
+    # Simulate failed api call:
+    class FakeResponse:
+        ok = False
+
+        def json(self):
+            return {}
+
+    # Patch in FakeResponse as a returned value from requests.get()
+    # mocker.patch("requests.get", return_value=FakeResponse())
+    # expected_error_msg = "Unexpected error when fetching API data"
+
+    # 1. Ensure that ApiError exception is raised
+    # 2. Ensure that correct error msg is logged
+    # Ensure that correct msg is logged and that correct exception is raised
+
+    # Is the  exception message as expected?
+
+    # Is the correct err msg logged?
