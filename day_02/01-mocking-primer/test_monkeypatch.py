@@ -4,85 +4,80 @@
 Use built-in monkeypatch fixture to
 
 * Show how to bypass an expensive call by mocking
-* Show how to simulate runtime errors using mocking.
 
 * Real example 1:
     - Avoiding ssh/scp-calls to hopper in bjorn
-* Real example 2:
-    - Mocking pymongo connections in flask apps (simplest example in bjornWeb)
 """
 
 import pytest
 import logging
-import time
+import requests
 
 
-class Thingie:
-
+class UserHandler:
     """
-    A thingie with a slow data-fetch and process operation
+    A thingie that fetches some user data from external api and processes it
     """
 
-    def __init__(self) -> None:
-        ...
+    API_URL = "http://localhost:666"
 
-    def do_thing_with_some_scout_case(self):
+    def __init__(self) -> None: ...
+
+    def fetch_user_by_username(self, username: str) -> list[dict]:
         """
-        Fetch and process a case.
+        Fetch and process a case from external api.
         """
-        result = self._slow_api_call()
+        api_call = f"{self.API_URL}/users?username={username}"
+        response = requests.get(api_call)
 
-        # Raise error if case cannot be fetched:
-        if not result:
-            raise RuntimeError
+        if not response.ok:
+            raise RuntimeError()
 
-        result["thing_done"] = True
-        return result
+        json_data = response.json()
+        return json_data
 
-    def _slow_api_call(self) -> dict:
-        """
-        Slow network call. We don't want this to run in our tests.
-        """
-        logging.info("Fetching case...")
-        time.sleep(15)
-
-        case_obj = {"case_id": "foo", "status": "archived"}
-
-        return case_obj
-
-    def _some_other_function(self, x, y):
-        ...
+    def get_user_email(self, username: str) -> str:
+        user_data = self.fetch_user_by_username(username).pop()
+        return user_data["email"]
 
 
 @pytest.fixture()
-def thingie():
+def user_handler():
     """
-    Initialized thingie
+    Initialized user thingie
     """
-    return Thingie()
+    return UserHandler()
 
 
 @pytest.fixture()
-def example_case():
+def user_data():
     """
-    Some test data
+    Test user data
     """
-    case_obj = {"case_id": "bar", "status": "active", "thing_done": True}
-    return case_obj
+    return {
+        "id": 1,
+        "name": "Leanne Graham",
+        "username": "Bret",
+        "email": "Sincere@april.biz",
+        "address": {
+            "street": "Kulas Light",
+            "suite": "Apt. 556",
+            "city": "Gwenborough",
+            "zipcode": "92998-3874",
+            "geo": {"lat": "-37.3159", "lng": "81.1496"},
+        },
+        "phone": "1-770-736-8031 x56442",
+        "website": "hildegard.org",
+        "company": {
+            "name": "Romaguera-Crona",
+            "catchPhrase": "Multi-layered client-server neural-net",
+            "bs": "harness real-time e-markets",
+        },
+    }
 
 
-def test_do_the_thing(thingie):
+def test_get_user_email(user_handler, user_data):
     """
-    Test that do_thing works, but bypass the expensive _fetch_scout_case function
+    Test that get_user_email works while bypassing external api call with monkey patch
     """
-    result = thingie.do_thing_with_some_scout_case()
-    assert result["case_id"] == "foo"
-
-
-def test_raise_exception_if_unable_to_retrieve_data():
-    """
-    Use monkeypatch on `_fetch_scout_case` to simulate a network error
-    """
-    ...
-    with pytest.raises(RuntimeError, match="Simulated network error"):
-        thingie.do_thing_with_some_scout_case()
+    assert user_handler.get_user_email(user_data["username"]) == user_data["email"]
