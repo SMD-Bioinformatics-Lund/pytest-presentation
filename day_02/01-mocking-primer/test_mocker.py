@@ -35,7 +35,7 @@ class UserHandler:
         response = requests.get(api_call)
 
         if not response.ok:
-            raise RuntimeError()
+            raise RuntimeError("Unexpected error when fetching API data")
 
         json_data = response.json()
         return json_data
@@ -99,6 +99,16 @@ def user_data():
     }
 
 
+@pytest.fixture()
+def api_url():
+    return "http://localhost:666"
+
+
+@pytest.fixture()
+def user_api_call(api_url, user_data):
+    return f"{api_url}/users?username={user_data['username']}"
+
+
 def test_get_user_email(patched_user_handler, user_data):
     """
     Test that get_user_email works while bypassing external api call with monkey patch
@@ -109,3 +119,4 @@ def test_get_user_email(patched_user_handler, user_data):
 
 
 def test_user_api_call_is_correct(mocker): ...
+def test_check_raises_runtime_error_if_not_ok(): ...
