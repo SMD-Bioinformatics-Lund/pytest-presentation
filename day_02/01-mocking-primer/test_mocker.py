@@ -150,6 +150,8 @@ def test_get_user_email_raises_error(user_handler, user_data, mocker, caplog):
     Test that our function behaves as expected when api is unreachable
     """
 
+    expected_error_msg = "Unexpected error when fetching API data"
+
     # Simulate failed api call:
     class FakeResponse:
         ok = False
@@ -158,8 +160,6 @@ def test_get_user_email_raises_error(user_handler, user_data, mocker, caplog):
             return {}
 
     # Patch in FakeResponse as a returned value from requests.get()
-    # mocker.patch("requests.get", return_value=FakeResponse())
-    # expected_error_msg = "Unexpected error when fetching API data"
 
     # 1. Ensure that ApiError exception is raised
     # 2. Ensure that correct error msg is logged
