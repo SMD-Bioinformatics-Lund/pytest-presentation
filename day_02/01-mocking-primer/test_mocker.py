@@ -8,14 +8,18 @@ We're still paranoid though. We want to test that the correct api call is submit
 requests.get without dispatching the actual request to the api.
 
 1. Replace monkeypatch patches with mocker equivalent
-2. Use mocker to check if fetch_user_by_username is called with correct username value
-3. Use mocker to check if requests.get inside fetch_user_by_username is called
+2. Use mocker to check if requests.get inside fetch_user_by_username is called
    with correct api call
+3. Use mocked response from response.get to simulate RuntimeError
 """
 
 import pytest
 import logging
 import requests
+
+
+# Custom Exception to signal api errors:
+class ApiError(Exception): ...
 
 
 class UserHandler:
@@ -35,12 +39,17 @@ class UserHandler:
         response = requests.get(api_call)
 
         if not response.ok:
-            raise RuntimeError("Unexpected error when fetching API data")
+            error_msg = "Unexpected error when fetching API data"
+            logging.error(error_msg)
+            raise ApiError(error_msg)
 
         json_data = response.json()
         return json_data
 
     def get_user_email(self, username: str) -> str:
+        """
+        fetch user email from external db
+        """
         user_data = self.fetch_user_by_username(username).pop()
         return user_data["email"]
 
@@ -118,5 +127,7 @@ def test_get_user_email(patched_user_handler, user_data):
     )
 
 
-def test_user_api_call_is_correct(mocker): ...
-def test_check_raises_runtime_error_if_not_ok(): ...
+def test_check_if_correct_api_call_dispatched(
+    user_handler, user_data, mocker, user_api_call
+):
+
