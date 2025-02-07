@@ -42,7 +42,11 @@ class UserHandler:
 
 
 @pytest.fixture()
-def user_handler():
+def fake_user_by_username_response(user_data): ...
+
+
+@pytest.fixture()
+def user_handler(monkeypatch, fake_user_by_username_response):
     """
     Initialized user thingie
     """
