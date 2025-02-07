@@ -65,3 +65,17 @@ def patched_sample_handler(sample_handler, mocker):
 def sample_object():
     sample = {"id": "foo", "status": "awaiting_sacrifice"}
     return sample
+
+
+def test_get_sample(patched_sample_handler, sample_object):
+    """
+    Test that sample can be fetched by id using mocker and mongomock
+    """
+    ...
+
+
+def test_add_sample(patched_sample_handler, sample_object):
+    """
+    Test that sample can be added using mocker and mongomock
+    """
+    ...
