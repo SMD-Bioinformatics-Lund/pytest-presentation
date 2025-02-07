@@ -1,6 +1,6 @@
 # pytest-presentation
 
-Presentation given at @SMD-Bioinformatics-Lund on 2025-01-23
+Presentation given at @SMD-Bioinformatics-Lund on 2025-01-23, and on 2025-02-10
 
 ## Install pytest
 
