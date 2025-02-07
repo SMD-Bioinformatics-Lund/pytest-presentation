@@ -6,6 +6,11 @@ to isolate get_user_email() for testing.
 
 We're still paranoid though. We want to test that the correct api call is submitted to
 requests.get without dispatching the actual request to the api.
+
+1. Replace monkeypatch patches with mocker equivalent
+2. Use mocker to check if fetch_user_by_username is called with correct username value
+3. Use mocker to check if requests.get inside fetch_user_by_username is called
+   with correct api call
 """
 
 import pytest
