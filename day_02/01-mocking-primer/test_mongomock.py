@@ -48,8 +48,17 @@ class SampleHandler:
         """
         return pymongo.MongoClient(mongo_uri)
 
-def empty_mock_mongodb():
+
+@pytest.fixture()
+def sample_handler():
+    sample_handler = SampleHandler()
+    return sample_handler
+
+
+@pytest.fixture()
+def patched_sample_handler(sample_handler, mocker):
     ...
+    return sample_handler
 
 
 @pytest.fixture()
