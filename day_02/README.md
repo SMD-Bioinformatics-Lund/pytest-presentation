@@ -28,8 +28,9 @@
 
 ## Example 3: Mocking MongoDB using mongomock
 
-* mongomock provides an in-memory simulation of a MongoDB database
+* mongomock provides a lightweight in-memory simulation of a MongoDB database
 * Simulates the PyMongo API, typically used by replacing a `pymongo.MongoClient` with `mongomock.MongoClient`
+
 
 # If time permits:
 
