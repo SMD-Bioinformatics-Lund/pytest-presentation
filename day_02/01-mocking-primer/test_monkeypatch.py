@@ -46,7 +46,8 @@ def user_handler():
     """
     Initialized user thingie
     """
-    return UserHandler()
+    user_handler = UserHandler()
+    return user_handler
 
 
 @pytest.fixture()
